@@ -19,3 +19,6 @@ shifted_dataset = shift.column(data=shifted_dataset, columns="20th",len = 3, up 
 shifted_dataset = shift.column(data=shifted_dataset, columns="20th",len = 4, up = FALSE,newNames = sprintf("t-4", "20th"))
 shifted_dataset = shift.column(data=shifted_dataset, columns="20th",len = 7, up = FALSE,newNames = sprintf("t-7", "20th"))
 
+# normalization
+shifted_dataset = as.data.frame(shifted_dataset %>% mutate_at(vars(-date), scale, center=T))
+
