@@ -22,3 +22,6 @@ shifted_dataset = shift.column(data=shifted_dataset, columns="20th",len = 7, up 
 # normalization
 shifted_dataset = as.data.frame(shifted_dataset %>% mutate_at(vars(-date), scale, center=T))
 
+#remove date column from dataset
+shifted_dataset = shifted_dataset[-1]
+
