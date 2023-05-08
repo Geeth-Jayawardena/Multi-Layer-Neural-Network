@@ -25,3 +25,9 @@ shifted_dataset = as.data.frame(shifted_dataset %>% mutate_at(vars(-date), scale
 #remove date column from dataset
 shifted_dataset = shifted_dataset[-1]
 
+# Split the dataset
+train = rep(FALSE, nrow(shifted_dataset))
+train[1:380] = TRUE
+
+training_set = shifted_dataset[train,]
+test_set = shifted_dataset[!train,]
