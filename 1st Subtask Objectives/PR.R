@@ -22,12 +22,13 @@ shifted_dataset = shift.column(data=shifted_dataset, columns="20th",len = 7, up 
 # normalization
 shifted_dataset = as.data.frame(shifted_dataset %>% mutate_at(vars(-date), scale, center=T))
 
-#remove date column from dataset
-shifted_dataset = shifted_dataset[-1]
-
 # Split the dataset
-train = rep(FALSE, nrow(shifted_dataset))
-train[1:380] = TRUE
+set.seed(123)
+split = sample.split(shifted_dataset$date, SplitRatio = 0.8)
 
-training_set = shifted_dataset[train,]
-test_set = shifted_dataset[!train,]
+training_set = subset(shifted_dataset, split == TRUE)
+test_set = subset(shifted_dataset, split == FALSE)
+
+#remove date column from dataset
+training_set = training_set[-1]
+test_set = test_set[-1]
