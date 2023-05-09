@@ -40,7 +40,7 @@ nn_models = list()
 formula = `20th`~t_1 + t_2 + t_3 + t_4 + t_7
 
 
-time.start <- Sys.time()
+time_begin = Sys.time()
 nn_models[[1]] <- neuralnet(formula,
                             data = training_set,
                             hidden = c(50),
@@ -49,7 +49,10 @@ nn_models[[1]] <- neuralnet(formula,
                             act.fct = "logistic",
                             threshold = 2
 )
-time.start <- Sys.time()
+time_stop = Sys.time()
+train_time_1 = time_stop - time_begin
+
+time_begin = Sys.time()
 nn_models[[2]] <- neuralnet(formula,
                             data = training_set,
                             hidden = c(100),
@@ -58,7 +61,10 @@ nn_models[[2]] <- neuralnet(formula,
                             act.fct = "logistic",
                             threshold = 2
 )
-time.start <- Sys.time()
+time_stop = Sys.time()
+train_time_2 = time_stop - time_begin
+
+time_begin = Sys.time()
 nn_models[[3]] <- neuralnet(formula,
                             data = training_set,
                             hidden = c(150),
@@ -67,7 +73,10 @@ nn_models[[3]] <- neuralnet(formula,
                             act.fct = "logistic",
                             threshold = 2
 )
-time.start <- Sys.time()
+time_stop = Sys.time()
+train_time_3 = time_stop - time_begin
+
+time_begin = Sys.time()
 nn_models[[4]] <- neuralnet(formula,
                             data = training_set,
                             hidden = c(50, 50),
@@ -76,7 +85,10 @@ nn_models[[4]] <- neuralnet(formula,
                             act.fct = "logistic",
                             threshold = 2
 )
-time.start <- Sys.time()
+time_stop = Sys.time()
+train_time_4 = time_stop - time_begin
+
+time_begin = Sys.time()
 nn_models[[5]] <- neuralnet(formula,
                             data = training_set,
                             hidden = c(50, 100 ),
@@ -85,7 +97,10 @@ nn_models[[5]] <- neuralnet(formula,
                             act.fct = "logistic",
                             threshold = 2
 )
-time.start <- Sys.time()
+time_stop = Sys.time()
+train_time_5 = time_stop - time_begin
+
+time_begin = Sys.time()
 nn_models[[6]] <- neuralnet(formula,
                             data = training_set,
                             hidden = c(50, 150 ),
@@ -94,7 +109,10 @@ nn_models[[6]] <- neuralnet(formula,
                             act.fct = "logistic",
                             threshold = 2
 )
-time.start <- Sys.time()
+time_stop = Sys.time()
+train_time_6 = time_stop - time_begin
+
+time_begin = Sys.time()
 nn_models[[7]] <- neuralnet(formula,
                             data = training_set,
                             hidden = c(50, 50, 50 ),
@@ -103,7 +121,10 @@ nn_models[[7]] <- neuralnet(formula,
                             act.fct = "logistic",
                             threshold = 2
 )
-time.start <- Sys.time()
+time_stop = Sys.time()
+train_time_7 = time_stop - time_begin
+
+time_begin = Sys.time()
 nn_models[[8]] <- neuralnet(formula,
                             data = training_set,
                             hidden = c(50, 100, 50 ),
@@ -112,7 +133,10 @@ nn_models[[8]] <- neuralnet(formula,
                             act.fct = "logistic",
                             threshold = 2
 )
-time.start <- Sys.time()
+time_stop = Sys.time()
+train_time_8 = time_stop - time_begin
+
+time_begin = Sys.time()
 nn_models[[9]] <- neuralnet(formula,
                             data = training_set,
                             hidden = c(50, 100, 150 ),
@@ -121,8 +145,11 @@ nn_models[[9]] <- neuralnet(formula,
                             act.fct = "logistic",
                             threshold = 2
 )
+time_stop = Sys.time()
+train_time_9 = time_stop - time_begin
 
-time.start <- Sys.time()
+
+time_begin = Sys.time()
 nn_models[[10]] <- neuralnet(formula,
                             data = training_set,
                             hidden = c(100, 100, 150 ),
@@ -131,7 +158,10 @@ nn_models[[10]] <- neuralnet(formula,
                             act.fct = "logistic",
                             threshold = 2
 )
-time.start <- Sys.time()
+time_stop = Sys.time()
+train_time_10 = time_stop - time_begin
+
+time_begin = Sys.time()
 nn_models[[11]] <- neuralnet(formula,
                             data = training_set,
                             hidden = c(50, 150, 150 ),
@@ -140,7 +170,10 @@ nn_models[[11]] <- neuralnet(formula,
                             act.fct = "logistic",
                             threshold = 2
 )
-time.start <- Sys.time()
+time_stop = Sys.time()
+train_time_11 = time_stop - time_begin
+
+time_begin = Sys.time()
 nn_models[[12]] <- neuralnet(formula,
                             data = training_set,
                             hidden = c(100, 100, 150 ),
@@ -149,7 +182,10 @@ nn_models[[12]] <- neuralnet(formula,
                             act.fct = "logistic",
                             threshold = 2
 )
-time.start <- Sys.time()
+time_stop = Sys.time()
+train_time_12 = time_stop - time_begin
+
+time_begin = Sys.time()
 nn_models[[13]] <- neuralnet(formula,
                             data = training_set,
                             hidden = c(100, 150, 150 ),
@@ -158,7 +194,10 @@ nn_models[[13]] <- neuralnet(formula,
                             act.fct = "logistic",
                             threshold = 2
 )
-time.start <- Sys.time()
+time_stop = Sys.time()
+train_time_13 = time_stop - time_begin
+
+time_begin = Sys.time()
 nn_models[[14]] <- neuralnet(formula,
                             data = training_set,
                             hidden = c(150, 150, 150 ),
@@ -167,4 +206,7 @@ nn_models[[14]] <- neuralnet(formula,
                             act.fct = "logistic",
                             threshold = 2
 )
+time_stop = Sys.time()
+train_time_14 = time_stop - time_begin
+
 
