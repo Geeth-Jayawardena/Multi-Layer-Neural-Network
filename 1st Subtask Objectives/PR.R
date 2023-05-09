@@ -42,7 +42,7 @@ formula = `20th`~t_1 + t_2 + t_3 + t_4 + t_7
 
 
 time_begin = Sys.time()
-model[[1]] <- neuralnet(formula,
+model[[1]] = neuralnet(formula,
                             data = training_set,
                             hidden = c(50),
                             linear.output = F,
@@ -54,7 +54,7 @@ time_stop = Sys.time()
 train_time_1 = time_stop - time_begin
 
 time_begin = Sys.time()
-model[[2]] <- neuralnet(formula,
+model[[2]] = neuralnet(formula,
                             data = training_set,
                             hidden = c(100),
                             linear.output = F,
@@ -66,7 +66,7 @@ time_stop = Sys.time()
 train_time_2 = time_stop - time_begin
 
 time_begin = Sys.time()
-model[[3]] <- neuralnet(formula,
+model[[3]] = neuralnet(formula,
                             data = training_set,
                             hidden = c(150),
                             linear.output = F,
@@ -78,7 +78,7 @@ time_stop = Sys.time()
 train_time_3 = time_stop - time_begin
 
 time_begin = Sys.time()
-model[[4]] <- neuralnet(formula,
+model[[4]] = neuralnet(formula,
                             data = training_set,
                             hidden = c(50, 50),
                             linear.output = F,
@@ -90,7 +90,7 @@ time_stop = Sys.time()
 train_time_4 = time_stop - time_begin
 
 time_begin = Sys.time()
-model[[5]] <- neuralnet(formula,
+model[[5]] = neuralnet(formula,
                             data = training_set,
                             hidden = c(50, 100 ),
                             linear.output = F,
@@ -102,7 +102,7 @@ time_stop = Sys.time()
 train_time_5 = time_stop - time_begin
 
 time_begin = Sys.time()
-model[[6]] <- neuralnet(formula,
+model[[6]] = neuralnet(formula,
                             data = training_set,
                             hidden = c(50, 150 ),
                             linear.output = F,
@@ -114,7 +114,7 @@ time_stop = Sys.time()
 train_time_6 = time_stop - time_begin
 
 time_begin = Sys.time()
-model[[7]] <- neuralnet(formula,
+model[[7]] = neuralnet(formula,
                             data = training_set,
                             hidden = c(50, 50, 50 ),
                             linear.output = F,
@@ -126,7 +126,7 @@ time_stop = Sys.time()
 train_time_7 = time_stop - time_begin
 
 time_begin = Sys.time()
-model[[8]] <- neuralnet(formula,
+model[[8]] = neuralnet(formula,
                             data = training_set,
                             hidden = c(50, 100, 50 ),
                             linear.output = F,
@@ -138,7 +138,7 @@ time_stop = Sys.time()
 train_time_8 = time_stop - time_begin
 
 time_begin = Sys.time()
-model[[9]] <- neuralnet(formula,
+model[[9]] = neuralnet(formula,
                             data = training_set,
                             hidden = c(50, 100, 150 ),
                             linear.output = F,
@@ -151,7 +151,7 @@ train_time_9 = time_stop - time_begin
 
 
 time_begin = Sys.time()
-model[[10]] <- neuralnet(formula,
+model[[10]] = neuralnet(formula,
                             data = training_set,
                             hidden = c(100, 100, 150 ),
                             linear.output = F,
@@ -163,7 +163,7 @@ time_stop = Sys.time()
 train_time_10 = time_stop - time_begin
 
 time_begin = Sys.time()
-model[[11]] <- neuralnet(formula,
+model[[11]] = neuralnet(formula,
                             data = training_set,
                             hidden = c(50, 150, 150 ),
                             linear.output = F,
@@ -175,7 +175,7 @@ time_stop = Sys.time()
 train_time_11 = time_stop - time_begin
 
 time_begin = Sys.time()
-model[[12]] <- neuralnet(formula,
+model[[12]] = neuralnet(formula,
                             data = training_set,
                             hidden = c(100, 100, 150 ),
                             linear.output = F,
@@ -187,7 +187,7 @@ time_stop = Sys.time()
 train_time_12 = time_stop - time_begin
 
 time_begin = Sys.time()
-model[[13]] <- neuralnet(formula,
+model[[13]] = neuralnet(formula,
                             data = training_set,
                             hidden = c(100, 150, 150 ),
                             linear.output = F,
@@ -199,7 +199,7 @@ time_stop = Sys.time()
 train_time_13 = time_stop - time_begin
 
 time_begin = Sys.time()
-model[[14]] <- neuralnet(formula,
+model[[14]] = neuralnet(formula,
                             data = training_set,
                             hidden = c(150, 150, 150 ),
                             linear.output = F,
