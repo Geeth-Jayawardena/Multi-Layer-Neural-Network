@@ -138,3 +138,76 @@ cat(paste(c("1 Hiddent layer with 50 hidden neurons: ", train_time_1, "\n",
             "3 Hiddent layer with 150. 100 and 150 hidden neurons: ", train_time_6),
           collapse = ""))
 cat("\n")
+
+predct = lapply(model, function(x) predict(x, test_set))
+
+score_rmse = sapply(predct, function(x){
+  rmse(test_set$`20th`, x)
+})
+
+mae = sapply(predct, function(x){
+  mae(test_set$`20th`, x)
+})
+
+mape = sapply(predct, function(x){
+  mape(test_set$`20th`, x)
+})
+
+smape <- sapply(predct, function(x){
+  smape(test_set$`20th`, x)
+})
+
+cat("RMSE:\n")
+cat(paste(c("1 Hiddent layer with 50 hidden neurons: ",
+            "1 Hiddent layer with 100 hidden neurons: ",
+            "2 Hiddent layer with 50 and 100 hidden neurons: ",
+            "3 Hiddent layer with 100, 100 and 100 hidden neurons: ",
+            "3 Hiddent layer with 150, 100 and 150 hidden neurons: ",
+            "3 Hiddent layer with 150. 100 and 150 hidden neurons: "),
+          score_rmse,
+          collapse = "\n"))
+cat("\n")
+
+cat("MAE:\n")
+cat(paste(c("1 Hiddent layer with 50 hidden neurons: ",
+            "1 Hiddent layer with 100 hidden neurons: ",
+            "2 Hiddent layer with 50 and 100 hidden neurons: ",
+            "3 Hiddent layer with 100, 100 and 100 hidden neurons: ",
+            "3 Hiddent layer with 150, 100 and 150 hidden neurons: ",
+            "3 Hiddent layer with 150. 100 and 150 hidden neurons: "),
+          mae,
+          collapse = "\n"))
+cat("\n")
+
+cat("MAPE:\n")
+cat(paste(c("1 Hiddent layer with 50 hidden neurons: ",
+            "1 Hiddent layer with 100 hidden neurons: ",
+            "2 Hiddent layer with 50 and 100 hidden neurons: ",
+            "3 Hiddent layer with 100, 100 and 100 hidden neurons: ",
+            "3 Hiddent layer with 150, 100 and 150 hidden neurons: ",
+            "3 Hiddent layer with 150. 100 and 150 hidden neurons: "),
+          mape,
+          collapse = "\n"))
+cat("\n")
+
+cat("SMAPE:\n")
+cat(paste(c("1 Hiddent layer with 50 hidden neurons: ",
+            "1 Hiddent layer with 100 hidden neurons: ",
+            "2 Hiddent layer with 50 and 100 hidden neurons: ",
+            "3 Hiddent layer with 100, 100 and 100 hidden neurons: ",
+            "3 Hiddent layer with 150, 100 and 150 hidden neurons: ",
+            "3 Hiddent layer with 150. 100 and 150 hidden neurons: "),
+          smape,
+          collapse = "\n"))
+cat("\n")
+
+predction = predct[[1]]
+
+predict_result = data.frame(predction = predction, actul_val = test_set$`20th`)
+  
+plot = plot_ly(predict_result, x = ~actul_val, y = ~predction, type = "scatter", mode = "markers")
+
+plot <- plot %>% add_trace(x = c(min(predict_result$actul_val), max(predict_result$actul_val)),
+                           y = c(min(predict_result$actul_val), max(predict_result$actul_val)),
+                           mode = "lines", line = list(color = "blue"))
+plot

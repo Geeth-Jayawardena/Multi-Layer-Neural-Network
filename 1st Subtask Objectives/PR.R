@@ -254,7 +254,7 @@ cat("\n")
 
 predct = lapply(model, function(x) predict(x, test_set))
 
-score = sapply(predct, function(x){
+score_rmse = sapply(predct, function(x){
   rmse(test_set$`20th`, x)
 })
 
@@ -285,7 +285,7 @@ cat(paste(c("1 Hiddent layer with 50 hidden neurons: ",
             "3 Hiddent layer with 100, 100 and 150 hidden neurons: ",
             "3 Hiddent layer with 100, 150 and 150 hidden neurons: ",
             "3 Hiddent layer with 150, 150 and 150 hidden neurons: "),
-          score,
+          score_rmse,
           collapse = "\n"))
 
 cat("\n")
