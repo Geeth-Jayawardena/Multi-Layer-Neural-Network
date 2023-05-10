@@ -23,11 +23,11 @@ shifted_dataset = shift.column(data=shifted_dataset, columns="20th",len = 4, up 
 shifted_dataset = shift.column(data=shifted_dataset, columns="20th",len = 7, up = FALSE,newNames = sprintf("t_7", "20th"))
 
 # normalization
-uow_data_scaled = as.data.frame(shifted_dataset %>% mutate_at(vars(-date), scale, center=T))
+shifted_dataset = as.data.frame(shifted_dataset %>% mutate_at(vars(-date), scale, center=T))
 
 # Split the dataset
 set.seed(123)
-split = sample.split(shifted_dataset$date, SplitRatio = 0.8)
+split = sample.split(shifted_dataset$date, SplitRatio = 380/453)
 
 training_set = subset(shifted_dataset, split == TRUE)
 test_set = subset(shifted_dataset, split == FALSE)
@@ -40,7 +40,7 @@ test_set = test_set[-1]
 model = list()
 formula = `20th`~t_1 + t_2 + t_3 + t_4 + t_7
 
-
+#  Model training
 time_begin = Sys.time()
 model[[1]] = neuralnet(formula,
                             data = training_set,
@@ -59,7 +59,7 @@ model[[2]] = neuralnet(formula,
                             hidden = c(100),
                             linear.output = F,
                             rep = 5,
-                            act.fct = "logistic",
+                            act.fct = "tanh",
                             threshold = 2
 )
 time_stop = Sys.time()
@@ -104,10 +104,10 @@ train_time_5 = time_stop - time_begin
 time_begin = Sys.time()
 model[[6]] = neuralnet(formula,
                             data = training_set,
-                            hidden = c(50, 150 ),
+                            hidden = c(150, 150 ),
                             linear.output = F,
                             rep = 5,
-                            act.fct = "logistic",
+                            act.fct = "tanh",
                             threshold = 2
 )
 time_stop = Sys.time()
@@ -165,10 +165,10 @@ train_time_10 = time_stop - time_begin
 time_begin = Sys.time()
 model[[11]] = neuralnet(formula,
                             data = training_set,
-                            hidden = c(50, 150, 150 ),
+                            hidden = c(150, 100, 150 ),
                             linear.output = F,
                             rep = 5,
-                            act.fct = "logistic",
+                            act.fct = "tanh",
                             threshold = 2
 )
 time_stop = Sys.time()
@@ -210,20 +210,22 @@ model[[14]] = neuralnet(formula,
 time_stop = Sys.time()
 train_time_14 = time_stop - time_begin
 
+# Calculate training score for each model
 score = sapply(model,function(x) {min(x$result.matrix[c("error"),])})
 
+# Print score
 cat("Training score with `20th`~t_1 + t_2 + t_3 + t_4 + t_7 \n")
 cat(paste(c("1 Hiddent layer with 50 hidden neurons: ",
-            "1 Hiddent layer with 100 hidden neurons: ",
+            "1 Hiddent layer with 100 hidden neurons with tanh: ",
             "1 Hiddent layer with 150 hidden neurons: ",
             "2 Hiddent layer with 50 and 50 hidden neurons: ",
             "2 Hiddent layer with 50 and 100 hidden neurons: ",
-            "2 Hiddent layer with 50 and 150 hidden neurons: ",
+            "2 Hiddent layer with 150 and 150 hidden neurons with tanh: ",
             "3 Hiddent layer with 50, 50 and 50 hidden neurons: ",
             "3 Hiddent layer with 50, 100 and 50 hidden neurons: ",
             "3 Hiddent layer with 50, 100 and 150 hidden neurons: ",
             "3 Hiddent layer with 100, 100 and 150 hidden neurons: ",
-            "3 Hiddent layer with 50, 150 and 150 hidden neurons: ",
+            "3 Hiddent layer with 150, 100 and 50 hidden neurons with tanh: ",
             "3 Hiddent layer with 100, 100 and 150 hidden neurons: ",
             "3 Hiddent layer with 100, 150 and 150 hidden neurons: ",
             "3 Hiddent layer with 150, 150 and 150 hidden neurons: "),
@@ -232,18 +234,19 @@ cat(paste(c("1 Hiddent layer with 50 hidden neurons: ",
 
 cat("\n")
 
+# Print train time
 cat("Training times \n")
 cat(paste(c("1 Hiddent layer with 50 hidden neurons: ", train_time_1,"\n",
-            "1 Hiddent layer with 100 hidden neurons: ", train_time_2,"\n",
+            "1 Hiddent layer with 100 hidden neurons with tanh: ", train_time_2,"\n",
             "1 Hiddent layer with 150 hidden neurons: ", train_time_3, "\n",
             "2 Hiddent layer with 50 and 50 hidden neurons: ", train_time_4, "\n",
             "2 Hiddent layer with 50 and 100 hidden neurons: ", train_time_5, "\n",
-            "2 Hiddent layer with 50 and 150 hidden neurons: ", train_time_6, "\n",
+            "2 Hiddent layer with 150 and 150 hidden neurons with tanh: ", train_time_6, "\n",
             "3 Hiddent layer with 50, 50 and 50 hidden neurons: ", train_time_7, "\n",
             "3 Hiddent layer with 50, 100 and 50 hidden neurons: ", train_time_8, "\n",
             "3 Hiddent layer with 50, 100 and 150 hidden neurons: ", train_time_9, "\n",
             "3 Hiddent layer with 100, 100 and 150 hidden neurons: ", train_time_10, "\n",
-            "3 Hiddent layer with 50, 150 and 150 hidden neurons: ", train_time_11, "\n",
+            "3 Hiddent layer with 150, 100 and 50 hidden neurons with tanh: ", train_time_11, "\n",
             "3 Hiddent layer with 100, 100 and 150 hidden neurons: ", train_time_12, "\n",
             "3 Hiddent layer with 100, 150 and 150 hidden neurons: ",train_time_13, "\n",
             "3 Hiddent layer with 150, 150 and 150 hidden neurons: ", train_time_14),
@@ -251,37 +254,42 @@ cat(paste(c("1 Hiddent layer with 50 hidden neurons: ", train_time_1,"\n",
 
 cat("\n")
 
-
+#Predict using on the testing set
 predct = lapply(model, function(x) predict(x, test_set))
 
+# Calculate testing score
 score_rmse = sapply(predct, function(x){
   rmse(test_set$`20th`, x)
 })
 
+#calculate MAE
 mae = sapply(predct, function(x){
   mae(test_set$`20th`, x)
 })
 
+#Calculate MAPE
 mape = sapply(predct, function(x){
   mape(test_set$`20th`, x)
 })
 
+# Calculate SMAPE
 smape <- sapply(predct, function(x){
   smape(test_set$`20th`, x)
 })
 
+#print testing score
 cat("RMSE:\n")
 cat(paste(c("1 Hiddent layer with 50 hidden neurons: ",
-            "1 Hiddent layer with 100 hidden neurons: ",
+            "1 Hiddent layer with 100 hidden neurons with tanh: ",
             "1 Hiddent layer with 150 hidden neurons: ",
             "2 Hiddent layer with 50 and 50 hidden neurons: ",
             "2 Hiddent layer with 50 and 100 hidden neurons: ",
-            "2 Hiddent layer with 50 and 150 hidden neurons: ",
+            "2 Hiddent layer with 150 and 150 hidden neurons with tanh: ",
             "3 Hiddent layer with 50, 50 and 50 hidden neurons: ",
             "3 Hiddent layer with 50, 100 and 50 hidden neurons: ",
             "3 Hiddent layer with 50, 100 and 150 hidden neurons: ",
             "3 Hiddent layer with 100, 100 and 150 hidden neurons: ",
-            "3 Hiddent layer with 50, 150 and 150 hidden neurons: ",
+            "3 Hiddent layer with 150, 100 and 50 hidden neurons with tank: ",
             "3 Hiddent layer with 100, 100 and 150 hidden neurons: ",
             "3 Hiddent layer with 100, 150 and 150 hidden neurons: ",
             "3 Hiddent layer with 150, 150 and 150 hidden neurons: "),
@@ -290,18 +298,19 @@ cat(paste(c("1 Hiddent layer with 50 hidden neurons: ",
 
 cat("\n")
 
+# print MAE
 cat("MAE:\n")
 cat(paste(c("1 Hiddent layer with 50 hidden neurons: ",
-            "1 Hiddent layer with 100 hidden neurons: ",
+            "1 Hiddent layer with 100 hidden neurons with tanh: ",
             "1 Hiddent layer with 150 hidden neurons: ",
             "2 Hiddent layer with 50 and 50 hidden neurons: ",
             "2 Hiddent layer with 50 and 100 hidden neurons: ",
-            "2 Hiddent layer with 50 and 150 hidden neurons: ",
+            "2 Hiddent layer with 150 and 150 hidden neurons with tanh: ",
             "3 Hiddent layer with 50, 50 and 50 hidden neurons: ",
             "3 Hiddent layer with 50, 100 and 50 hidden neurons: ",
             "3 Hiddent layer with 50, 100 and 150 hidden neurons: ",
             "3 Hiddent layer with 100, 100 and 150 hidden neurons: ",
-            "3 Hiddent layer with 50, 150 and 150 hidden neurons: ",
+            "3 Hiddent layer with 150, 100 and 50 hidden neurons with tank: ",
             "3 Hiddent layer with 100, 100 and 150 hidden neurons: ",
             "3 Hiddent layer with 100, 150 and 150 hidden neurons: ",
             "3 Hiddent layer with 150, 150 and 150 hidden neurons: "),
@@ -310,18 +319,19 @@ cat(paste(c("1 Hiddent layer with 50 hidden neurons: ",
 
 cat("\n")
 
+# Print MAPE
 cat("MAPE:\n")
 cat(paste(c("1 Hiddent layer with 50 hidden neurons: ",
-            "1 Hiddent layer with 100 hidden neurons: ",
+            "1 Hiddent layer with 100 hidden neurons with tanh: ",
             "1 Hiddent layer with 150 hidden neurons: ",
             "2 Hiddent layer with 50 and 50 hidden neurons: ",
             "2 Hiddent layer with 50 and 100 hidden neurons: ",
-            "2 Hiddent layer with 50 and 150 hidden neurons: ",
+            "2 Hiddent layer with 150 and 150 hidden neurons with tanh: ",
             "3 Hiddent layer with 50, 50 and 50 hidden neurons: ",
             "3 Hiddent layer with 50, 100 and 50 hidden neurons: ",
             "3 Hiddent layer with 50, 100 and 150 hidden neurons: ",
             "3 Hiddent layer with 100, 100 and 150 hidden neurons: ",
-            "3 Hiddent layer with 50, 150 and 150 hidden neurons: ",
+            "3 Hiddent layer with 150, 100 and 50 hidden neurons with tank: ",
             "3 Hiddent layer with 100, 100 and 150 hidden neurons: ",
             "3 Hiddent layer with 100, 150 and 150 hidden neurons: ",
             "3 Hiddent layer with 150, 150 and 150 hidden neurons: "),
@@ -330,18 +340,19 @@ cat(paste(c("1 Hiddent layer with 50 hidden neurons: ",
 
 cat("\n")
 
+# Print SMAPE
 cat("SMAPE:\n")
 cat(paste(c("1 Hiddent layer with 50 hidden neurons: ",
-            "1 Hiddent layer with 100 hidden neurons: ",
+            "1 Hiddent layer with 100 hidden neurons with tanh: ",
             "1 Hiddent layer with 150 hidden neurons: ",
             "2 Hiddent layer with 50 and 50 hidden neurons: ",
             "2 Hiddent layer with 50 and 100 hidden neurons: ",
-            "2 Hiddent layer with 50 and 150 hidden neurons: ",
+            "2 Hiddent layer with 150 and 150 hidden neurons with tanh: ",
             "3 Hiddent layer with 50, 50 and 50 hidden neurons: ",
             "3 Hiddent layer with 50, 100 and 50 hidden neurons: ",
             "3 Hiddent layer with 50, 100 and 150 hidden neurons: ",
             "3 Hiddent layer with 100, 100 and 150 hidden neurons: ",
-            "3 Hiddent layer with 50, 150 and 150 hidden neurons: ",
+            "3 Hiddent layer with 150, 100 and 50 hidden neurons with tank: ",
             "3 Hiddent layer with 100, 100 and 150 hidden neurons: ",
             "3 Hiddent layer with 100, 150 and 150 hidden neurons: ",
             "3 Hiddent layer with 150, 150 and 150 hidden neurons: "),
